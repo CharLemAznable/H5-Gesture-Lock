@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
+  <title>GestureLock</title>
+  <link rel="stylesheet" href="./_css/gesture-lock.css"></link>
+  <script type="text/javascript" src="../common/_js/common.js"></script>
+  <script type="text/javascript" src="./_js/gesture-lock.js"></script>
+</head>
+<body>
+  <script type="text/javascript">
+    new GestureLock({
+      lockId : 'lock-canvas',
+      root: document.body,
+      delegate: {
+        touchEnded: function(gestureLock, password) {
+          if (password == '1,2,3,6,9') {
+            gestureLock.reset();
+          } else {
+            gestureLock.uninteractive = true;
+            gestureLock.showError();
+            setTimeout(function() {
+              gestureLock.reset();
+              gestureLock.uninteractive = false;
+            }, 1000);
+          }
+        }
+      }
+    }).init();
+  </script>
+</body>
+</html>

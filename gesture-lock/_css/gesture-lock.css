@@ -1,0 +1,6 @@
+@media(device-width:320px){html{font-size:100px;}}
+@media(device-width:375px){html{font-size:117.1875px;}}
+@media(min-device-width:414px){html{font-size:129.375px;}}
+
+body{font-size:0.14rem;text-align:center;background-color:#393939;}
+.lock-canvas{display:inline-block;margin-top:0.15rem;}
