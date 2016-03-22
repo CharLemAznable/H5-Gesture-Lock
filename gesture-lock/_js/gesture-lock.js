@@ -8,7 +8,7 @@
     this.uninteractive = obj.uninteractive || false;
     this.repeatable = obj.repeatable || false;
     this.error = false;
-    this.nodeRadius = obj.nodeRadius || 30;
+    this.nodeRadius = obj.nodeRadius || 32.5;
     this.lineWidth = obj.lineWidth || 10;
     this.routeHidden = obj.routeHidden || false;
 
