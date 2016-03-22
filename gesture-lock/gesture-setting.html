@@ -67,6 +67,7 @@
     }
     GestureSetting.reset = function() {
       previewLock.showPassword("");
+      this.confirming = false;
       this.tempword = "";
       this.displayInitial();
       this.hideMessage();

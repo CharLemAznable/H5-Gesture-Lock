@@ -49,7 +49,7 @@
     var passwords = password.split(',');
     for (var i = 0; i < passwords.length; i++) {
       var index = Number(passwords[i]);
-      if (index > this.nodes.length) continue;
+      if (index <= 0 || index > this.nodes.length) continue;
       this.nodes[index - 1].selected = true;
       this.selectedNodes.push(this.nodes[index -1]);
     }
