@@ -9,7 +9,7 @@
     this.repeatable = obj.repeatable || false;
     this.error = false;
     this.nodeRadius = obj.nodeRadius || 32.5;
-    this.lineWidth = obj.lineWidth || 10;
+    this.lineWidth = obj.lineWidth || 6;
     this.routeHidden = obj.routeHidden || false;
 
     this.touchPoint = {x: -1, y: -1};
