@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
+  <title></title>
+  <link rel="stylesheet" href="./_css/gesture-lock.css"></link>
+  <script type="text/javascript" src="../common/_js/common.js"></script>
+  <script type="text/javascript" src="./_js/gesture-lock.js"></script>
+</head>
+<body>
+  <button class="gesture-back gesture-back-img" id="gesture-back" onclick="GestureSetting.backExit();" style="display:none;"></button>
+  <div class="preview" id="preview"></div>
+  <div class="comment" id="comment">　</div>
+  <div class="message" id="message">　</div>
+  <div id="gesture-lock"></div>
+  <button class="skip" id="skip" onclick="GestureSetting.skip()" style="display:none;">跳过</button>
+  <button class="reset" id="reset" onclick="GestureSetting.reset()" style="display:none;">重新绘制解锁图案</button>
+
+  <script type="text/javascript">
+    var GestureSetting = {};
+    GestureSetting.confirming = false;
+    GestureSetting.tempword = "";
+    GestureSetting.storedPassword = function() {
+      return window.localStorage.getItem('password');
+    }
+    GestureSetting.showMessage = function(msg) {
+      document.getElementById("message").innerHTML = msg;
+    }
+    GestureSetting.hideMessage = function() {
+      document.getElementById("message").innerHTML = "　";
+    }
+    GestureSetting.displayInitial = function() {
+      document.getElementById("comment").innerHTML = "绘制解锁图案";
+      if (this.storedPassword()) {
+        document.getElementById("gesture-back").style.display = "block";
+        document.getElementById("skip").style.display = "none";
+      } else {
+        document.getElementById("gesture-back").style.display = "none";
+        document.getElementById("skip").style.display = "inline-block";
+      }
+      document.getElementById("reset").style.display = "none";
+    }
+    GestureSetting.displayConfirm = function() {
+      document.getElementById("comment").innerHTML = "再次绘制解锁图案";
+      if (this.storedPassword()) {
+        document.getElementById("gesture-back").style.display = "none";
+        document.getElementById("skip").style.display = "none";
+      } else {
+        document.getElementById("gesture-back").style.display = "none";
+        document.getElementById("skip").style.display = "none";
+      }
+      document.getElementById("reset").style.display = "inline-block";
+    }
+    GestureSetting.backExit = function() {
+      PodDemo.popOut();
+      PodDemo.toggleNavigationBar({"hide": false});
+    }
+    GestureSetting.skip = function() {
+      PodDemo.confirm({
+        "message" : "手势密码可以保护你的账户安全，确定跳过？",
+        "cancelButton" : "取消", "confirmButton" : "确定",
+        "confirmCallback" : function() {
+          GestureSetting.backExit();
+        }
+      });
+    }
+    GestureSetting.reset = function() {
+      previewLock.showPassword("");
+      this.tempword = "";
+      this.displayInitial();
+      this.hideMessage();
+    }
+
+    var previewLock = new GestureLock({
+      lockId : 'preview-lock',
+      root: document.getElementById("preview"),
+      canvasSize: 60,
+      uninteractive: true,
+      nodeRadius: 6,
+      routeHidden: true,
+      selectedImage: Common.DeviceImage('./_img/preview-selected.png'),
+      normalImage: Common.DeviceImage('./_img/preview-normal.png'),
+    });
+    previewLock.init();
+
+    var gestureLock = new GestureLock({
+      lockId : 'lock-canvas',
+      root: document.getElementById("gesture-lock"),
+      delegate: {
+        touchEnded: function(gestureLock, password) {
+          GestureSetting.hideMessage();
+
+          if (!GestureSetting.confirming) { // first
+            gestureLock.reset();
+            if (password.split(',').length < 4) {
+              GestureSetting.showMessage("至少连接4个点，请重新输入");
+              return;
+            }
+            previewLock.showPassword(password);
+            GestureSetting.confirming = true;
+            GestureSetting.tempword = password;
+            GestureSetting.displayConfirm();
+
+          } else if (password == GestureSetting.tempword) { // success
+            gestureLock.reset();
+            if (password.split(',').length < 4) {
+              GestureSetting.showMessage("至少连接4个点，请重新输入");
+              return;
+            }
+            GestureSetting.showMessage("设置成功");
+            setTimeout(function() {
+              window.localStorage.setItem('password', password);
+              GestureSetting.backExit();
+            }, 1000);
+
+          } else {
+            GestureSetting.showMessage("与上次绘制不一致，请重新绘制");
+            gestureLock.uninteractive = true;
+            gestureLock.showError();
+            setTimeout(function() {
+              gestureLock.reset();
+              gestureLock.uninteractive = false;
+            }, 1000);
+          }
+        }
+      }
+    });
+    gestureLock.init();
+
+    GestureSetting.displayInitial();
+  </script>
+</body>
+</html>

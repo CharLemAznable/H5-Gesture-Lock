@@ -1,6 +1,14 @@
 @media(device-width:320px){html{font-size:100px;}}
 @media(device-width:375px){html{font-size:117.1875px;}}
 @media(min-device-width:414px){html{font-size:129.375px;}}
-
-body{font-size:0.14rem;text-align:center;background-color:#393939;}
-.lock-canvas{display:inline-block;margin-top:0.15rem;}
+body{font-size:0.15rem;text-align:center;background-color:#393939;color:#888888}
+button{border:0;background-color:#393939;font:inherit;color:inherit;}
+.gesture-back{position:absolute;top:0.06rem;left:0.08rem;width:0.32rem;height:0.32rem;background-size:100% 100%;}
+@media(-webkit-min-device-pixel-ratio:1){.gesture-back-img{background-image:url(../_img/gesture-back-1x.png);}}
+@media(-webkit-min-device-pixel-ratio:2){.gesture-back-img{background-image:url(../_img/gesture-back-2x.png);}}
+@media(-webkit-min-device-pixel-ratio:3){.gesture-back-img{background-image:url(../_img/gesture-back-3x.png);}}
+.preview{margin-top:0.5rem;}
+@@media(device-height:480px){.preview{margin-top:0.15rem;}}
+.comment{margin-top:0.1rem;}
+.message{margin-top:0.1rem;color:#ff0000;}
+.skip,.reset{margin-top:0.05rem;}

@@ -16,9 +16,9 @@
 
     this.errorColor = obj.errorColor || '#ff0000';
     this.normalColor = obj.normalColor || '#00d1de';
-    this.errorImage = Common.DeviceImage('./_img/gesture-error.png');
-    this.selectedImage = Common.DeviceImage('./_img/gesture-selected.png');
-    this.normalImage = Common.DeviceImage('./_img/gesture-normal.png');
+    this.errorImage = obj.errorImage || Common.DeviceImage('./_img/gesture-error.png');
+    this.selectedImage = obj.selectedImage || Common.DeviceImage('./_img/gesture-selected.png');
+    this.normalImage = obj.normalImage || Common.DeviceImage('./_img/gesture-normal.png');
 
     this.delegate = obj.delegate || {};
   }
@@ -53,14 +53,15 @@
       this.nodes[index - 1].selected = true;
       this.selectedNodes.push(this.nodes[index -1]);
     }
+    this.updateCanvas();
   }
 
   GestureLock.prototype.initDOM = function(){
     var frame = document.createElement('div');
-    frame.setAttribute('style','position:absolute;top:0;left:0;right:0;bottom:0;');
+    var style = ' style="display:inline-block;"';
     var width = ' width="' + this.canvasSize * Common.DeviceScale + '"';
     var height = ' height="' + this.canvasSize * Common.DeviceScale + '"';
-    frame.innerHTML = '<canvas id="' + this.lockId + '" class="lock-canvas"' + width + height + '></canvas>';
+    frame.innerHTML = '<canvas id="' + this.lockId + '"' + style + width + height + '></canvas>';
     this.root.appendChild(frame);
   }
 
