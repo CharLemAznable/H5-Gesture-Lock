@@ -9,13 +9,15 @@
   <script type="text/javascript" src="./_js/gesture-lock.js"></script>
 </head>
 <body>
-  <button class="gesture-back gesture-back-img" id="gesture-back" onclick="GestureSetting.backExit();" style="display:none;"></button>
-  <div class="preview" id="preview"></div>
-  <div class="comment" id="comment">　</div>
-  <div class="message" id="message">　</div>
+  <div class="header">
+    <button id="gesture-back" class="back back-img" onclick="GestureSetting.backExit();" style="display:none;"></button>
+    <div id="preview" class="preview"></div>
+    <div id="comment" class="pd10">　</div>
+    <div id="message" class="pd10 red">　</div>
+  </div>
   <div id="gesture-lock"></div>
-  <button class="skip" id="skip" onclick="GestureSetting.skip()" style="display:none;">跳过</button>
-  <button class="reset" id="reset" onclick="GestureSetting.reset()" style="display:none;">重新绘制解锁图案</button>
+  <button id="skip" onclick="GestureSetting.skip()" style="display:none;">跳过</button>
+  <button id="reset" onclick="GestureSetting.reset()" style="display:none;">重新绘制解锁图案</button>
 
   <script type="text/javascript">
     var GestureSetting = {};
@@ -59,7 +61,8 @@
     GestureSetting.skip = function() {
       PodDemo.confirm({
         "message" : "手势密码可以保护你的账户安全，确定跳过？",
-        "cancelButton" : "取消", "confirmButton" : "确定",
+        "cancelButton" : "取消",
+        "confirmButton" : "确定",
         "confirmCallback" : function() {
           GestureSetting.backExit();
         }
