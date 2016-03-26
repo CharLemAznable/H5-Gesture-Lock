@@ -59,8 +59,8 @@
   GestureLock.prototype.initDOM = function(){
     var frame = document.createElement('div');
     var style = ' style="display:inline-block;"';
-    var width = ' width="' + this.canvasSize * Common.DeviceScale + '"';
-    var height = ' height="' + this.canvasSize * Common.DeviceScale + '"';
+    var width = ' width="' + this.canvasSize * Common.iDeviceScale + '"';
+    var height = ' height="' + this.canvasSize * Common.iDeviceScale + '"';
     frame.innerHTML = '<canvas id="' + this.lockId + '"' + style + width + height + '></canvas>';
     this.root.appendChild(frame);
   }
@@ -109,9 +109,9 @@
       this.ctx.shadowColor = node.selected ? (this.error ? this.errorColor : this.normalColor) : '#000000';
       this.ctx.shadowBlur = node.selected ? 3 : 0;
       this.ctx.drawImage(node.selected ? (this.error ? this.errorImage : this.selectedImage) : this.normalImage,
-        node.x * Common.DeviceScale, node.y * Common.DeviceScale,
-        this.nodeRadius * 2 * Common.DeviceScale,
-        this.nodeRadius * 2 * Common.DeviceScale
+        node.x * Common.iDeviceScale, node.y * Common.iDeviceScale,
+        this.nodeRadius * 2 * Common.iDeviceScale,
+        this.nodeRadius * 2 * Common.iDeviceScale
       );
     }
     this.ctx.shadowColor = '#000000';
@@ -197,12 +197,12 @@
   }
 
   GestureLock.prototype.nodeContainsPosition = function(node, pos) {
-    return calcuDistance(pos, this.nodeCenterPoint(node)) < this.nodeRadius * Common.DeviceScale;
+    return calcuDistance(pos, this.nodeCenterPoint(node)) < this.nodeRadius * Common.iDeviceScale;
   }
 
   GestureLock.prototype.nodeCenterPoint = function(node) {
-    return {x: (node.x + this.nodeRadius) * Common.DeviceScale,
-            y: (node.y + this.nodeRadius) * Common.DeviceScale};
+    return {x: (node.x + this.nodeRadius) * Common.iDeviceScale,
+            y: (node.y + this.nodeRadius) * Common.iDeviceScale};
   }
 
   function calcuDistance(a, b){return Math.sqrt(Math.pow(a.x-b.x,2)+Math.pow(a.y-b.y,2));}
