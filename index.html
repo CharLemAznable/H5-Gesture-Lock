@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
+  <title></title>
+  <style type="text/css">
+    body{font-family:'Helvetica Neue';font-size:15px;text-align:center;margin:0;}
+    a{line-height:100px;color:#333333;text-decoration:none;}
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    function initialize() {
+      if (window.localStorage.getItem('password')) {
+        window.location = "./gesture-lock/gesture-verify.html?verify=login";
+      } else if (!window.localStorage.getItem('skip-gesture')) {
+        window.location = "./gesture-lock/gesture-setting.html";
+      }
+    }
+    function changePassword() {
+      if (window.localStorage.getItem('password')) {
+        window.location = "./gesture-lock/gesture-verify.html?target=.%2fgesture-setting.html%3fpopPrev%3d1";
+      } else {
+        window.location = "./gesture-lock/gesture-setting.html";
+      }
+    }
+  </script>
+  <a href="javascript:initialize();">初始化</a>
+  <br/>
+  <a href="javascript:changePassword();">修改手势密码</a>
+</body>
+</html>

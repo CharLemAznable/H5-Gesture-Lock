@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8"></meta>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
@@ -55,17 +55,13 @@
       document.getElementById("reset").style.display = "inline-block";
     }
     GestureSetting.backExit = function() {
-      AGXB.popOut({"count":Common.urlParam('popPrev') ? 2 : 1});
+      history.go(Common.urlParam('popPrev') ? -2 : -1);
     }
     GestureSetting.skip = function() {
-      AGXB.confirm({
-        "message" : "手势密码可以保护你的账户安全，确定跳过？",
-        "cancelButton" : "取消",
-        "confirmButton" : "确定",
-        "confirmCallback" : function() {
-          GestureSetting.backExit();
-        }
-      });
+      if (confirm("手势密码可以保护你的账户安全，确定跳过？")) {
+        window.localStorage.setItem('skip-gesture', 1);
+        GestureSetting.backExit();
+      }
     }
     GestureSetting.reset = function() {
       previewLock.showPassword("");

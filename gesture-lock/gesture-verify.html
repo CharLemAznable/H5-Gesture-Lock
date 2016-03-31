@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8"></meta>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
@@ -10,7 +10,7 @@
 </head>
 <body>
   <div id="login-header" class="header" style="display:none;">
-    <div id="user-photo-border" class="photo-border photo-border-img">
+    <div id="user-photo-border" class="photo-border photo-border-img photo-mt">
       <img id="user-photo" class="photo-default photo-default-img" src="../common/_img/blank.gif"></img>
     </div>
     <div id="phone-number" class="pd08">　</div>
@@ -26,24 +26,27 @@
   <button id="forget" onclick="GestureVerify.forgetPassword();">忘记登录手势</button>
 
   <script type="text/javascript">
-    window.localStorage.setItem('pswd-retry', 0);
+    if (!window.localStorage.getItem('pswd-retry')) {
+      window.localStorage.setItem('pswd-retry', 0);
+    }
 
     var GestureVerify = {};
     if (Common.urlParam('verify') == 'login') {
       document.getElementById("login-header").style.display = "block";
       document.getElementById("verify-header").style.display = "none";
-      /* mock user info init */
-      setTimeout(function() {
-        if (Math.random() < 0.5) document.getElementById("user-photo").src = "./_img/mock-user-photo.jpg";
-        document.getElementById("phone-number").innerHTML = "186****5678";
-      }, 0);
-      /* mock user info end */
       GestureVerify.showMessage = function(msg) {
         document.getElementById("login-message").innerHTML = msg;
       }
       GestureVerify.hideMessage = function() {
         document.getElementById("login-message").innerHTML = "　";
       }
+
+      /* mock user info init */
+      setTimeout(function() {
+        document.getElementById("user-photo").src = "./_img/mock-user-photo.jpg";
+        document.getElementById("phone-number").innerHTML = "186****5678";
+      }, 0);
+      /* mock user info end */
     } else {
       document.getElementById("login-header").style.display = "none";
       document.getElementById("verify-header").style.display = "block";
@@ -59,32 +62,25 @@
       }
     }
     GestureVerify.backExit = function() {
-      AGXB.popOut();
+      history.go(-1);
     }
     GestureVerify.forgetPassword = function() {
-      AGXB.confirm({
-        "message" : "忘记登录手势需要重新登录",
-        "cancelButton" : "取消",
-        "confirmButton" : "重新登录",
-        "confirmCallback" : function() {
-          AGXB.alert({
-            "message" : "模拟退出登录",
-            "button" : "确定",
-            "callback" : function() { GestureVerify.backExit(); }
-          });
-        }
-      });
+      if (confirm("忘记登录手势需要重新登录")) {
+        window.localStorage.setItem('pswd-retry', 0);
+        window.localStorage.removeItem('password');
+        history.go(-1);
+      }
     }
     GestureVerify.touchEnded = function(gestureLock, password) {
       this.hideMessage();
 
       var pw = window.localStorage.getItem('password');
       if (password == pw) {
-        gestureLock.reset();
+        window.localStorage.setItem('pswd-retry', 0);
         if (Common.urlParam('target')) {
-          AGXB.pushWebView({"file":"" + decodeURIComponent(Common.urlParam('target')), "hideNav":Common.urlParam('hideNav')});
+          window.location = decodeURIComponent(Common.urlParam('target'));
         } else {
-          AGXB.popOut();
+          history.go(-1);
         }
       } else {
         gestureLock.uninteractive = true;
@@ -93,11 +89,7 @@
         var retry = Number(window.localStorage.getItem('pswd-retry')) + 1;
         window.localStorage.setItem('pswd-retry', retry);
         if (retry >= 5) {
-          AGXB.alert({
-            "message" : "模拟退出登录",
-            "button" : "确定",
-            "callback" : function() { GestureVerify.backExit(); }
-          });
+          GestureVerify.backExit();
           return;
         }
         this.showMessage("密码输入错误，还可以输入" + (5 - retry) + "次");

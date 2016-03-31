@@ -58,9 +58,9 @@
 
   GestureLock.prototype.initDOM = function(){
     var frame = document.createElement('div');
-    var style = ' style="display:inline-block;"';
-    var width = ' width="' + this.canvasSize * Common.iDeviceScale + '"';
-    var height = ' height="' + this.canvasSize * Common.iDeviceScale + '"';
+    var style = ' style="display:inline-block;width:' + this.canvasSize / 100 + 'rem;height:' + this.canvasSize / 100 + 'rem;"';
+    var width = ' width="' + this.canvasSize * Common.iDeviceScale * window.devicePixelRatio + '"';
+    var height = ' height="' + this.canvasSize * Common.iDeviceScale * window.devicePixelRatio + '"';
     frame.innerHTML = '<canvas id="' + this.lockId + '"' + style + width + height + '></canvas>';
     this.root.appendChild(frame);
   }
@@ -86,8 +86,8 @@
 
   GestureLock.prototype.updateCanvas = function() {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.drawNodes();
     this.drawLines();
+    this.drawNodes();
   }
 
   GestureLock.prototype.bindEvent = function() {
@@ -109,9 +109,9 @@
       this.ctx.shadowColor = node.selected ? (this.error ? this.errorColor : this.normalColor) : '#000000';
       this.ctx.shadowBlur = node.selected ? 3 : 0;
       this.ctx.drawImage(node.selected ? (this.error ? this.errorImage : this.selectedImage) : this.normalImage,
-        node.x * Common.iDeviceScale, node.y * Common.iDeviceScale,
-        this.nodeRadius * 2 * Common.iDeviceScale,
-        this.nodeRadius * 2 * Common.iDeviceScale
+        node.x * Common.iDeviceScale * window.devicePixelRatio, node.y * Common.iDeviceScale * window.devicePixelRatio,
+        this.nodeRadius * 2 * Common.iDeviceScale * window.devicePixelRatio,
+        this.nodeRadius * 2 * Common.iDeviceScale * window.devicePixelRatio
       );
     }
     this.ctx.shadowColor = '#000000';
@@ -124,16 +124,16 @@
     this.ctx.beginPath();
     this.ctx.strokeStyle = this.error ? this.errorColor : this.normalColor;
     this.ctx.globalAlpha = 0.45;
-    this.ctx.lineWidth = this.lineWidth;
+    this.ctx.lineWidth = this.lineWidth * window.devicePixelRatio;
     this.ctx.lineJoin = 'round';
     var center = this.nodeCenterPoint(this.selectedNodes[0]);
-    this.ctx.moveTo(center.x, center.y);
+    this.ctx.moveTo(center.x * window.devicePixelRatio, center.y * window.devicePixelRatio);
     for (var i = 1; i < this.selectedNodes.length; i++) {
       center = this.nodeCenterPoint(this.selectedNodes[i]);
-      this.ctx.lineTo(center.x, center.y);
+      this.ctx.lineTo(center.x * window.devicePixelRatio, center.y * window.devicePixelRatio);
     }
     if (this.touchPoint.x != -1 && this.touchPoint.y != -1) {
-      this.ctx.lineTo(this.touchPoint.x, this.touchPoint.y);
+      this.ctx.lineTo(this.touchPoint.x * window.devicePixelRatio, this.touchPoint.y * window.devicePixelRatio);
     }
     this.ctx.stroke();
     this.ctx.globalAlpha = 1.0;
