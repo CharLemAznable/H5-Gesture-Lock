@@ -1,8 +1,8 @@
-# HTML5 + JavaScript 实现手势解锁
+### HTML5 + JavaScript 实现手势解锁
 
-利用Canvas绘图和JavaScript触摸事件实现手势解锁功能.
+利用```Canvas```绘图和```JavaScript```触摸事件实现手势解锁功能.
 
-#####手势锁设置
+##### 手势锁设置
 
     // 交互开关
     uninteractive
